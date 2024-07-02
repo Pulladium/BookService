@@ -54,7 +54,6 @@ public class BookService {
         Optional<Book> book2Response = bookRepo.findById(id);
 
         if(book2Response.isPresent()){
-//            return (BookResponse) book2Response.stream().map(this::map2BookResponse);
             Book book = book2Response.get();
             return this.map2BookResponse(book);
         }
@@ -83,7 +82,6 @@ public class BookService {
             return map2BookResponse(updatedBook);
         }
         else {
-//            throw new BookNotFoundException("Irrelated id:" + id);
             log.error("Book by id {} not found", id);
             return null;
         }
@@ -101,12 +99,7 @@ public class BookService {
         }
 
         return deletingBook;
-//        if(deletedBook.isEmpty()){
-////            throw new BookNotFoundException("Book not found with id: " + id);
-//            log.warn("Book not found with id: {}", id);
-//            return null;
-//        }
-//        return map2BookResponse(deletedBook.get());
+
 
     }
 
