@@ -4,6 +4,7 @@ import com.vozh.art.bookservice.dto.BookRequst;
 import com.vozh.art.bookservice.dto.BookResponse;
 import com.vozh.art.bookservice.exception.BookNotFoundException;
 import com.vozh.art.bookservice.model.Book;
+import com.vozh.art.bookservice.model.BookValidator;
 import com.vozh.art.bookservice.repository.BookRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +21,11 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepo bookRepo;
+    private final BookValidator requstValidator;
 
-    public boolean createNewBook(BookRequst requst){
+    public BookResponse createNewBook(BookRequst requst){
 
+        requstValidator.validateBookRequest(requst);
         Book newBook =  Book.builder()
                 .author(requst.getAuthor())
                 .title(requst.getTitle())
@@ -30,10 +33,10 @@ public class BookService {
                 .publishedDate(requst.getPublishedDate())
                 .build();
 
-        bookRepo.save(newBook);
         log.info("Book has been saved to H2 Db");
-        return true;
-        //todo verifying
+        return map2BookResponse(bookRepo.save(newBook));
+
+
     }
 
     @Transactional(readOnly = true)
