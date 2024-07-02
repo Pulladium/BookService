@@ -1,0 +1,31 @@
+POST http://localhost:8081/books
+Content-Type: application/json
+
+{
+  "title" : "Bomzh story",
+  "author": "F. Scottina",
+  "isbn": "9780743273565",
+  "publishedDate": "1925-04-10"
+}
+
+###
+GET http://localhost:8081/books/2
+
+
+###
+GET http://localhost:8081/books
+
+
+###
+#this shit works fine with postman by presisly put gives
+#400 <Response body is empty> if run throw Idea
+PUT http://localhost:8081/books/1
+Content-Type: application/json
+
+{
+    "title" : "Lopopopo",
+    "author": "Rubin B.v.",
+    "isbn": "33380743273565",
+  	"publishedDate": "1925-04-10"
+}
+
