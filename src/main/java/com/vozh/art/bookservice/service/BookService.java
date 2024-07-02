@@ -2,6 +2,7 @@ package com.vozh.art.bookservice.service;
 
 import com.vozh.art.bookservice.dto.BookRequst;
 import com.vozh.art.bookservice.dto.BookResponse;
+import com.vozh.art.bookservice.exception.BookNotFoundException;
 import com.vozh.art.bookservice.model.Book;
 import com.vozh.art.bookservice.repository.BookRepo;
 import lombok.RequiredArgsConstructor;
@@ -48,26 +49,36 @@ public class BookService {
 
         if(book2Response.isPresent()){
 //            return (BookResponse) book2Response.stream().map(this::map2BookResponse);
-            return bookRepo.findById(id).map(this::map2BookResponse)
-                    .orElse(null);
-        }else {
+            Book book = book2Response.get();
+            return this.map2BookResponse(book);
+        }
+        else {
             log.warn("no book with id:{} was foud", id);
             return null;
         }
     }
 
     //Put
+    @Transactional
     public BookResponse bookUpdate(Long id, BookRequst requst){
-        Book newBook =  Book.builder()
-                .author(requst.getAuthor())
-                .title(requst.getTitle())
-                .isbn(requst.getIsbn())
-                .publishedDate(requst.getPublishedDate())
-                .build();
+        Optional<Book> book2Update = bookRepo.findById(id);
+        if(book2Update.isPresent()){
+            Book book = book2Update.get();
 
-        bookRepo.save(newBook);
+            //book update
+            book.setAuthor(requst.getAuthor());
+            book.setTitle(requst.getTitle());
+            book.setIsbn(requst.getIsbn());
+            book.setPublishedDate(requst.getPublishedDate());
 
-        return getById(id);
+            Book updatedBook = bookRepo.save(book);
+            return map2BookResponse(updatedBook);
+        }
+        else {
+//            throw new BookNotFoundException("Irrelated id:" + id);
+            log.error("Book by id {} not found", id);
+            return null;
+        }
 
     }
 
