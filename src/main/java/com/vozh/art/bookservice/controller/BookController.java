@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Slf4j
 @RestController
@@ -36,4 +38,16 @@ public class BookController {
         return "Controller is working";
     }
 
+    @GetMapping
+    public ResponseEntity<List<BookResponse>> getAllBooks(){
+        log.info("Received GET request to /books");
+        try {
+            List<BookResponse> bookResponses = bookService.getAllBooks();
+            return ResponseEntity.status(HttpStatus.FOUND).body(bookResponses);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+    }
 }
