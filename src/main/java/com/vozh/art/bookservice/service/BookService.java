@@ -21,7 +21,7 @@ public class BookService {
 
     private final BookRepo bookRepo;
 
-    public void createNewBook(BookRequst requst){
+    public boolean createNewBook(BookRequst requst){
 
         Book newBook =  Book.builder()
                 .author(requst.getAuthor())
@@ -32,6 +32,8 @@ public class BookService {
 
         bookRepo.save(newBook);
         log.info("Book has been saved to H2 Db");
+        return true;
+        //todo verifying
     }
 
     @Transactional(readOnly = true)
@@ -82,6 +84,18 @@ public class BookService {
 
     }
 
+    @Transactional
+    public BookResponse deleteById(Long id){
+
+        Optional<Book> deletedBook = bookRepo.deleteBookById(id);
+        if(deletedBook.isEmpty()){
+//            throw new BookNotFoundException("Book not found with id: " + id);
+            log.warn("Book not found with id: {}", id);
+            return null;
+        }
+        return map2BookResponse(deletedBook.get());
+
+    }
 
     private BookResponse map2BookResponse(Book book){
         return BookResponse.builder()
