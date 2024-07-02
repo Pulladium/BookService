@@ -26,6 +26,7 @@ public class BookService {
     public BookResponse createNewBook(BookRequst requst){
 
         requstValidator.validateBookRequest(requst);
+
         Book newBook =  Book.builder()
                 .author(requst.getAuthor())
                 .title(requst.getTitle())
@@ -66,6 +67,8 @@ public class BookService {
     //Put
     @Transactional
     public BookResponse bookUpdate(Long id, BookRequst requst){
+        requstValidator.validateBookRequest(requst);
+
         Optional<Book> book2Update = bookRepo.findById(id);
         if(book2Update.isPresent()){
             Book book = book2Update.get();
