@@ -31,9 +31,11 @@ public class BookController {
                     .status(HttpStatus.CREATED).body(createdBook);
         }
         catch (IllegalArgumentException e) {
+            log.warn(e.toString());
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST).body(null);
         } catch (Exception e) {
+            log.warn(e.toString());
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -52,6 +54,7 @@ public class BookController {
                     .status(HttpStatus.FOUND).body(bookResponses);
         }
         catch (Exception e){
+            log.warn(e.toString());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
@@ -65,6 +68,7 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.FOUND).body(bookResponse);
         }
         catch (Exception e){
+            log.warn(e.toString());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
@@ -81,6 +85,17 @@ public class BookController {
         }catch (Exception e){
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BookResponse> deleteBook(@PathVariable("id") Long id){
+        try {
+            BookResponse bookResponse = bookService.deleteById(id);
+            return ResponseEntity.status(HttpStatus.FOUND).body(bookResponse);
+        }catch (Exception e){
+            log.warn(e.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 }

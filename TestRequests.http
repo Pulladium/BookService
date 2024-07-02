@@ -17,15 +17,19 @@ GET http://localhost:8081/books
 
 
 ###
-#this shit works fine with postman by presisly put gives
+#this shit works FINE with POSTMAN but presisly PUT method gives
 #400 <Response body is empty> if run throw Idea
-PUT http://localhost:8081/books/1
-Content-Type: application/json
 
-{
-    "title" : "Lopopopo",
-    "author": "Rubin B.v.",
-    "isbn": "33380743273565",
-  	"publishedDate": "1925-04-10"
-}
+#PUT http://localhost:8081/books/1
+#Content-Type: application/json
+#
+#{
+#    "title" : "Lopopopo",
+#    "author": "Rubin B.v.",
+#    "isbn": "33380743273565",
+#  	"publishedDate": "1925-04-10"
+#}
 
+
+###
+DELETE http://localhost:8081/books/1

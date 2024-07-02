@@ -93,13 +93,20 @@ public class BookService {
     @Transactional
     public BookResponse deleteById(Long id){
 
-        Optional<Book> deletedBook = bookRepo.deleteBookById(id);
-        if(deletedBook.isEmpty()){
-//            throw new BookNotFoundException("Book not found with id: " + id);
-            log.warn("Book not found with id: {}", id);
-            return null;
+        BookResponse deletingBook = getById(id);
+        bookRepo.deleteById(id);
+
+        if(getById(id) != null){
+            log.error("book havent deleted");
         }
-        return map2BookResponse(deletedBook.get());
+
+        return deletingBook;
+//        if(deletedBook.isEmpty()){
+////            throw new BookNotFoundException("Book not found with id: " + id);
+//            log.warn("Book not found with id: {}", id);
+//            return null;
+//        }
+//        return map2BookResponse(deletedBook.get());
 
     }
 
